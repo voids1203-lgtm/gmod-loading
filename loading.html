@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chargement…</title>
+<style>
+  html, body {
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
+    background: #000; overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  #stage { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  .slide {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;            /* remplit l'ecran, recadre si besoin */
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  .slide.active { opacity: 1; }
+  #hint {
+    position: absolute; bottom: 18px; left: 0; width: 100%;
+    text-align: center;
+    color: #d9b26a; font-size: 14px; letter-spacing: 3px; text-transform: uppercase;
+    text-shadow: 0 1px 4px #000;
+  }
+</style>
+</head>
+<body>
+  <div id="stage"></div>
+  <div id="hint">Chargement…</div>
+
+<script>
+  /* ============ CONFIG — édite uniquement ces 2 lignes ============ */
+  var IMAGES  = ["screen1.png", "screen2.png"]; // tes .png (même dossier que ce fichier)
+  var SECONDS = 6;                                             // durée d'affichage par image
+  /* =============================================================== */
+
+  var stage = document.getElementById("stage");
+  var slides = [];
+
+  for (var i = 0; i < IMAGES.length; i++) {
+    var img = document.createElement("img");
+    img.className = "slide" + (i === 0 ? " active" : "");
+    img.src = IMAGES[i];
+    stage.appendChild(img);
+    slides.push(img);
+  }
+
+  var idx = 0;
+  if (slides.length > 1) {
+    setInterval(function () {
+      slides[idx].className = "slide";
+      idx = (idx + 1) % slides.length;
+      slides[idx].className = "slide active";
+    }, SECONDS * 1000);
+  }
+
+  /* GMod appelle ces fonctions automatiquement (facultatif). */
+  function GameDetails(servername) { if (servername) { document.getElementById("hint").innerHTML = servername; } }
+  function SetFilesTotal(total) {}
+  function SetFilesNeeded(needed) {}
+  function DownloadingFile(fileName) {}
+  function SetStatusChanged(status) {}
+</script>
+</body>
+</html>
